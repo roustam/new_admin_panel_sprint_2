@@ -5,19 +5,24 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0008_alter_genrefilmwork_genre'),
+        ("movies", "0008_alter_genrefilmwork_genre"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='personfilmwork',
-            name='person',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='fw_person', to='movies.person'),
+            model_name="personfilmwork",
+            name="person",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="fw_person",
+                to="movies.person",
+            ),
         ),
         migrations.AddIndex(
-            model_name='personfilmwork',
-            index=models.Index(fields=['film_work', 'person'], name='film_work_person_idx'),
+            model_name="personfilmwork",
+            index=models.Index(
+                fields=["film_work", "person"], name="film_work_person_idx"
+            ),
         ),
     ]

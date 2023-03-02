@@ -5,25 +5,32 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0003_alter_filmwork_persons'),
+        ("movies", "0003_alter_filmwork_persons"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='filmwork',
-            name='genres',
-            field=models.ManyToManyField(through='movies.GenreFilmwork', to='movies.Genre'),
+            model_name="filmwork",
+            name="genres",
+            field=models.ManyToManyField(
+                through="movies.GenreFilmwork", to="movies.Genre"
+            ),
         ),
         migrations.AlterField(
-            model_name='filmwork',
-            name='persons',
-            field=models.ManyToManyField(through='movies.PersonFilmwork', to='movies.Person'),
+            model_name="filmwork",
+            name="persons",
+            field=models.ManyToManyField(
+                through="movies.PersonFilmwork", to="movies.Person"
+            ),
         ),
         migrations.AlterField(
-            model_name='personfilmwork',
-            name='film_work',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='film_work', to='movies.filmwork'),
+            model_name="personfilmwork",
+            name="film_work",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="film_work",
+                to="movies.filmwork",
+            ),
         ),
     ]

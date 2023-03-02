@@ -4,14 +4,17 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0009_auto_20230302_1222'),
+        ("movies", "0009_auto_20230302_1222"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='filmwork',
-            options={'ordering': ['title'], 'verbose_name': 'Кинопроизведение', 'verbose_name_plural': 'Кинопроизведения'},
+            name="filmwork",
+            options={
+                "ordering": ["title"],
+                "verbose_name": "Кинопроизведение",
+                "verbose_name_plural": "Кинопроизведения",
+            },
         ),
     ]

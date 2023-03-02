@@ -4,20 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0006_auto_20230301_1714'),
+        ("movies", "0006_auto_20230301_1714"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='filmwork',
-            name='genres',
-            field=models.ManyToManyField(through='movies.GenreFilmwork', to='movies.Genre'),
+            model_name="filmwork",
+            name="genres",
+            field=models.ManyToManyField(
+                through="movies.GenreFilmwork", to="movies.Genre"
+            ),
         ),
         migrations.AlterField(
-            model_name='filmwork',
-            name='persons',
-            field=models.ManyToManyField(through='movies.PersonFilmwork', to='movies.Person'),
+            model_name="filmwork",
+            name="persons",
+            field=models.ManyToManyField(
+                through="movies.PersonFilmwork", to="movies.Person"
+            ),
         ),
     ]
