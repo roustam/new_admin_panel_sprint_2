@@ -1,4 +1,5 @@
 import uuid
+
 from django.contrib import admin
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -80,9 +81,7 @@ class Filmwork(TimeStampedMixin):
         verbose_name = "Кинопроизведение"
         verbose_name_plural = "Кинопроизведения"
         ordering = ["title"]
-        indexes = [
-            models.Index(fields=["creation_date"], name="film_work_creation_date_idx"),
-        ]
+
 
     def __str__(self) -> str:
         return self.title
@@ -113,8 +112,8 @@ class PersonFilmwork(UUIDMixin):
         db_table = 'content"."person_film_work'
         verbose_name = "Роль в кинопроизведениях"
         verbose_name_plural = "Роли в кинопроизведениях"
-        indexes = [
-            models.Index(fields=["film_work", "person"], name="film_work_person_idx")
+        constraints = [
+            models.UniqueConstraint(fields=["film_work", "person"], name="person_filmwork_idx")
         ]
 
 

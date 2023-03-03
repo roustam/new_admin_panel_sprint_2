@@ -4,8 +4,6 @@ networks:
   movies_network:
     driver: bridge
 
-
-
 services:
   nginx:
     container_name: websrv_movies
@@ -26,17 +24,21 @@ services:
     build: ./app
     container_name: backend_movies
     user: web
-    ports:
-      - 8000:8000
-    env_file:
-      - app/config/.env
+    expose:
+      - "8000"
     environment:
+      - DEBUG=True
+      - SECRET_KEY="django-insecure-^asw*0e^9@l8%=s12&&e)#1^gkpy&t^x7oa$$&(pble4lg(mic"
+      - IP_ADDRESSES=127.0.0.1,0.0.0.0
+      - DB_HOST=postgredb
+      - DB_USER='app'
+      - DB_PASSWORD='123qwe'
+      - DB_NAME='movies_database'
       - PYTHONDONTWRITEBYTECODE=1
       - DJANGO_SETTINGS_MODULE
       - UWSGI_PROCESSES=1
       - UWSGI_THREADS=16
       - UWSGI_HARAKIRI=240
-      - DB_HOST=postgredb
     volumes:
       - ./static:/opt/app/static_root
     networks:
@@ -50,15 +52,15 @@ services:
     build: ./postgredb
     container_name: postgres_movies
     env_file:
-      - postgredb/.env.db
+      - postgredb/.env
     environment:
-      - POSTGRES_DB=movies_database
-      - POSTGRES_USER=app
-      - POSTGRES_PASSWORD=123qwe
-    ports:
-      - 5432:5432
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    expose:
+      - "5432"
     healthcheck:
-      test: ["CMD", "pg_isready","--username=app", "--dbname=movies_database","--timeout=15"]
+      test: ["CMD", "pg_isready","--username=${DB_USER}", "--dbname=${DB_NAME}","--timeout=15"]
       interval: 15s
       timeout: 30s
       retries: 16
