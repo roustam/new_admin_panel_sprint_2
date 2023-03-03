@@ -22,12 +22,13 @@ ENV IP_ADDRESSES ${IP_ADDRESSES}
 ENV SECRET_KEY SECRET_KEY${DJANGO_SETTINGS_MODULE}
 
 RUN groupadd -r web && useradd -d /opt/app -r -g web web \
-    && chown web:web -R /opt/app
+    && chown web:web -R /opt/app \
+    && apt-get -y update && apt-get -y install gettext
 
 USER web
 
 RUN pip install --upgrade pip \
-    && pip install -r requirements.txt \
+    && pip install --no-cache-dir -r requirements.txt \
     && mkdir static && mkdir static_root
 
 EXPOSE 8000

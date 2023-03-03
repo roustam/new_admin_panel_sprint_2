@@ -1,4 +1,5 @@
 import uuid
+
 from django.contrib import admin
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -59,7 +60,7 @@ class Filmwork(TimeStampedMixin):
         _("title"), null=False, max_length=255, default="Без названия"
     )
     genres = models.ManyToManyField(Genre, through="GenreFilmwork")
-    persons = models.ManyToManyField(Person, through='PersonFilmwork') #
+    persons = models.ManyToManyField(Person, through="PersonFilmwork")
     description = models.TextField(_("filmwork_desc"), max_length=2048)
     creation_date = models.DateField(
         _("creation_date"),
@@ -76,11 +77,11 @@ class Filmwork(TimeStampedMixin):
 
     class Meta:
         db_table = 'content"."film_work'
+
         verbose_name = "Кинопроизведение"
         verbose_name_plural = "Кинопроизведения"
-        indexes = [
-            models.Index(fields=["creation_date"], name="film_work_creation_date_idx"),
-        ]
+        ordering = ["title"]
+
 
     def __str__(self) -> str:
         return self.title
@@ -92,8 +93,12 @@ class PersonFilmwork(UUIDMixin):
         DIRECTOR = "director", _("Director")
         WRITER = "writer", _("Writer")
 
-    film_work = models.ForeignKey(Filmwork, on_delete=models.CASCADE)
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    film_work = models.ForeignKey(
+        Filmwork, related_name="film_work", on_delete=models.CASCADE
+    )
+    person = models.ForeignKey(
+        Person, related_name="fw_person", on_delete=models.CASCADE
+    )
     role = models.CharField(
         _("role"),
         choices=PersonRoles.choices,
@@ -107,6 +112,7 @@ class PersonFilmwork(UUIDMixin):
         db_table = 'content"."person_film_work'
         verbose_name = "Роль в кинопроизведениях"
         verbose_name_plural = "Роли в кинопроизведениях"
+        unique_together =  ('film_work','role', 'person')
 
 
 class GenreFilmwork(UUIDMixin):
@@ -115,7 +121,11 @@ class GenreFilmwork(UUIDMixin):
         Filmwork, on_delete=models.CASCADE, to_field="id", db_column="film_work_id"
     )
     genre = models.ForeignKey(
-        "Genre", to_field="id", db_column="genre_id", on_delete=models.CASCADE
+        Genre,
+        to_field="id",
+        db_column="genre_id",
+        related_name="genres",
+        on_delete=models.CASCADE,
     )
     created = models.DateTimeField(_("created"), auto_now_add=True)
 
