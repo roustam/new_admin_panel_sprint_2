@@ -1,4 +1,7 @@
-Для запуска проекта выполните команду docker-compose up в директории с файлом docker-compose.yml.
+Для запуска проекта создайте .env файл в директории с docker-compose.yml и внесите в него
+параметры. Образец - .env.example
+
+Выполните команду docker-compose up в директории с файлом docker-compose.yml.
 
 Имена контейнеров:
 
